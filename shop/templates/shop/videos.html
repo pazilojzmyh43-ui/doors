@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Наши работы{% endblock %}
+
+{% block content %}
+<section class="page">
+    <p class="eyebrow">С прошлых объектов</p>
+    <h1>Видео заказов</h1>
+    <p class="intro">Короткие ролики с монтажа: квартирные входные, межкомнатные и двери частных домов. Записи лежат в базе и открываются отдельной страницей, не на главной.</p>
+    <div class="video-grid">
+        {% for item in videos %}
+        <article class="video-card">
+            <video controls preload="metadata" playsinline>
+                <source src="{{ item.video.url }}" type="video/mp4">
+            </video>
+            <div>
+                <h2>{{ item.title }}</h2>
+                <p class="muted">{% if item.place %}{{ item.place }}{% endif %}{% if item.shot_at %} · {{ item.shot_at|date:"j E Y" }}{% endif %}</p>
+                <p>{{ item.description }}</p>
+            </div>
+        </article>
+        {% empty %}
+        <p>Видео пока не загружены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

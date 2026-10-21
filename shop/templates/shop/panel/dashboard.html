@@ -1,0 +1,19 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Панель{% endblock %}
+
+{% block content %}
+<section class="page">
+    {% include "shop/panel/subnav.html" %}
+    <h1>Панель администратора</h1>
+    <p class="intro">Отсюда правится наполнение сайта: категории и двери, новости, видео прошлых заказов, регистрация менеджеров и удаление клиентов с менеджерами.</p>
+    <div class="stats">
+        <a href="{% url 'panel_categories' %}"><b>{{ counts.categories }}</b><span>категории</span></a>
+        <a href="{% url 'panel_products' %}"><b>{{ counts.products }}</b><span>двери</span></a>
+        <a href="{% url 'panel_news' %}"><b>{{ counts.news }}</b><span>новости</span></a>
+        <a href="{% url 'panel_videos' %}"><b>{{ counts.videos }}</b><span>видео</span></a>
+        <a href="{% url 'panel_users' %}"><b>{{ counts.clients }}</b><span>клиенты</span></a>
+        <a href="{% url 'panel_users' %}"><b>{{ counts.managers }}</b><span>менеджеры</span></a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<section class="page">
+    <p class="eyebrow">{{ company.legal }}</p>
+    <h1>Контакты</h1>
+    <div class="contact-grid">
+        <article>
+            <h2>Мастерская</h2>
+            <p>{{ company.address }}</p>
+            <p>Часы работы: {{ company.hours }}</p>
+            <ul>
+                {% for phone in company.phones %}
+                <li><a href="tel:{{ phone }}">{{ phone }}</a></li>
+                {% endfor %}
+            </ul>
+            <p><a href="mailto:{{ company.email }}">{{ company.email }}</a></p>
+        </article>
+        <article>
+            <h2>Разработчик сайта</h2>
+            <p>{{ company.developer }}</p>
+            <p>На сайте четыре роли: гость смотрит витрину и регистрируется, клиент заказывает, менеджер ведёт заказы, администратор правит каталог, новости, видео и пользователей.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}

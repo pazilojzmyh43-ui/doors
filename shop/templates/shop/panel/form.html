@@ -1,0 +1,17 @@
+{% extends "shop/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="page narrow-page">
+    {% include "shop/panel/subnav.html" %}
+    <h1>{{ title }}</h1>
+    <form method="post" class="form" {% if multipart %}enctype="multipart/form-data"{% endif %} novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Сохранить</button>
+        <a class="btn btn--ghost" href="{% url back %}">Назад</a>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "shop/base.html" %}
+
+{% block title %}{% if current %}{{ current.name }}{% else %}Каталог{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page">
+    <p class="eyebrow">Каталог</p>
+    <h1>{% if current %}{{ current.name }}{% else %}Двери по назначению{% endif %}</h1>
+    {% if current %}
+    <p class="intro">{{ current.description }}</p>
+    {% else %}
+    <p class="intro">Три категории, в каждой не меньше пяти моделей. Карточки собраны из базы: название, цена, материал и фотография.</p>
+    {% endif %}
+
+    <div class="chips">
+        <a class="{% if not current %}is-active{% endif %}" href="{% url 'catalog' %}">Все</a>
+        {% for category in all_categories %}
+        <a class="{% if current and current.pk == category.pk %}is-active{% endif %}" href="{% url 'catalog_category' category.slug %}">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+
+    {% for category in categories %}
+    <section class="catalog-block">
+        {% if not current %}
+        <div class="section__head">
+            <h2>{{ category.name }}</h2>
+            <a href="{% url 'catalog_category' category.slug %}">Только эта категория</a>
+        </div>
+        <p class="muted">{{ category.description }}</p>
+        {% endif %}
+        <div class="grid">
+            {% for product in category.products.all %}
+                {% include "shop/includes/product_card.html" %}
+            {% empty %}
+            <p>В этой категории пока нет дверей.</p>
+            {% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+</section>
+{% endblock %}

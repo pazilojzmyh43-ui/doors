@@ -1,0 +1,48 @@
+{% extends "shop/base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<section class="page product">
+    <p class="crumbs"><a href="{% url 'catalog' %}">Каталог</a> / <a href="{% url 'catalog_category' product.category.slug %}">{{ product.category.name }}</a></p>
+    <div class="product__layout">
+        <div class="product__photo">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <span class="ph"></span>
+            {% endif %}
+        </div>
+        <div>
+            <p class="eyebrow">{{ product.category.name }}</p>
+            <h1>{{ product.name }}</h1>
+            <p class="price price--lg">{{ product.price_label }} ₽</p>
+            <p>{{ product.description }}</p>
+            <dl class="specs">
+                <div><dt>Материал</dt><dd>{{ product.material|default:"—" }}</dd></div>
+                <div><dt>Размер</dt><dd>{{ product.size }}</dd></div>
+                <div><dt>Наличие</dt><dd>{% if product.in_stock %}На складе{% else %}Изготовим под заказ{% endif %}</dd></div>
+            </dl>
+            {% if user_role == 'client' or not user.is_authenticated %}
+            <form method="post" action="{% url 'cart_add' product.id %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">В корзину</button>
+            </form>
+            {% elif user_role == 'manager' %}
+            <p class="muted">Оформление заказа доступно клиенту. Вам открыт раздел «Заказы».</p>
+            {% else %}
+            <p class="muted">Корзина клиента здесь не используется. Каталогом можно управлять в панели.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if related %}
+    <h2>Ещё в этой категории</h2>
+    <div class="grid">
+        {% for product in related %}
+            {% include "shop/includes/product_card.html" %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

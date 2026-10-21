@@ -1,0 +1,46 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="page">
+    <h1>Корзина</h1>
+    {% if items %}
+    <div class="stack">
+        {% for item in items %}
+        <article class="line">
+            <a class="line__photo" href="{% url 'product_detail' item.product.id %}">
+                {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="">{% endif %}
+            </a>
+            <div>
+                <p class="eyebrow">{{ item.product.category.name }}</p>
+                <h2><a href="{% url 'product_detail' item.product.id %}">{{ item.product.name }}</a></h2>
+                <p class="muted">{{ item.product.price_label }} ₽ за штуку</p>
+            </div>
+            <form method="post" action="{% url 'cart_update' item.id %}" class="qty">
+                {% csrf_token %}
+                <label>Количество
+                    <input class="field" type="number" name="quantity" min="0" max="20" value="{{ item.quantity }}">
+                </label>
+                <button class="btn btn--small btn--ghost" type="submit">Обновить</button>
+            </form>
+            <div class="line__sum">
+                <strong>{{ item.line_label }} ₽</strong>
+                <form method="post" action="{% url 'cart_remove' item.id %}">
+                    {% csrf_token %}
+                    <button class="text-btn" type="submit">Удалить</button>
+                </form>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    <div class="total-bar">
+        <p>Итого <strong>{{ cart.total_label }} ₽</strong></p>
+        <a class="btn" href="{% url 'checkout' %}">Оформить заказ</a>
+    </div>
+    {% else %}
+    <p class="intro">Корзина пустая. В каталоге можно выбрать дверь и добавить её сюда.</p>
+    <a class="btn" href="{% url 'catalog' %}">В каталог</a>
+    {% endif %}
+</section>
+{% endblock %}

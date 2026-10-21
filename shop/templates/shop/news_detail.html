@@ -1,0 +1,12 @@
+{% extends "shop/base.html" %}
+
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+<article class="page narrow-page">
+    <p class="crumbs"><a href="{% url 'news_list' %}">Новости</a></p>
+    <time datetime="{{ item.published_at|date:'Y-m-d' }}">{{ item.published_at|date:"j E Y" }}</time>
+    <h1>{{ item.title }}</h1>
+    <div class="prose"><p>{{ item.text|linebreaksbr }}</p></div>
+</article>
+{% endblock %}

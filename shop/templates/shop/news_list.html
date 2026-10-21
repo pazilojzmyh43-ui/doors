@@ -1,0 +1,22 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<section class="page narrow-page">
+    <p class="eyebrow">Мастерская</p>
+    <h1>Новости</h1>
+    <p class="intro">Все сообщения компании, новые сверху.</p>
+    <div class="news-list">
+        {% for item in news_list %}
+        <article>
+            <time datetime="{{ item.published_at|date:'Y-m-d' }}">{{ item.published_at|date:"j E Y" }}</time>
+            <h2><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h2>
+            <p>{{ item.text }}</p>
+        </article>
+        {% empty %}
+        <p>Новостей пока нет.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

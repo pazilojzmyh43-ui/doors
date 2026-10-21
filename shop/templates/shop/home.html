@@ -1,0 +1,68 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}{{ company.name }} — главная{% endblock %}
+
+{% block hero %}
+<section class="hero">
+    <video class="hero__video" autoplay muted loop playsinline poster="{% static 'shop/img/showroom.jpg' %}">
+        <source src="{% static 'shop/video/hero.mp4' %}" type="video/mp4">
+    </video>
+    <div class="hero__shade"></div>
+    <div class="hero__content">
+        <img class="hero__logo" src="{% static 'shop/img/logo.svg' %}" alt="">
+        <p class="eyebrow eyebrow--light">{{ company.legal }} · Псков</p>
+        <h1>{{ company.name }}</h1>
+        <p class="lead">{{ company.annotation }}</p>
+        <div class="hero__actions">
+            <a class="btn btn--light" href="{% url 'catalog' %}">Смотреть каталог</a>
+            <a class="btn btn--ghostlight" href="{% url 'videos' %}">Видео прошлых заказов</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section__head">
+        <h2>Три линейки</h2>
+        <a href="{% url 'catalog' %}">Весь каталог</a>
+    </div>
+    <div class="cats">
+        {% for category in categories %}
+        <a class="cat" href="{% url 'catalog_category' category.slug %}">
+            <div class="cat__media">
+                {% with product=category.products.all|first %}
+                    {% if product and product.image %}
+                    <img src="{{ product.image.url }}" alt="">
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="cat__body">
+                <h3>{{ category.name }}</h3>
+                <p>{{ category.description }}</p>
+                <span>{{ category.products.count }} моделей</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section section--paper">
+    <div class="section__head">
+        <h2>Последние новости</h2>
+        <a href="{% url 'news_list' %}">Все новости</a>
+    </div>
+    <div class="news-grid">
+        {% for item in news_list %}
+        <article class="news-card">
+            <time datetime="{{ item.published_at|date:'Y-m-d' }}">{{ item.published_at|date:"j E Y" }}</time>
+            <h3><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h3>
+            <p>{{ item.text|truncatewords:28 }}</p>
+        </article>
+        {% empty %}
+        <p>Новостей пока нет.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

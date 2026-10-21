@@ -1,0 +1,28 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<section class="page split">
+    <div>
+        <h1>Вход</h1>
+        <form method="post" class="form" novalidate>
+            {% csrf_token %}
+            {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+            {{ form.non_field_errors }}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Войти</button>
+        </form>
+        <p class="muted">Нет учётной записи? <a href="{% url 'register' %}">Регистрация клиента</a>.</p>
+    </div>
+    <aside class="aside">
+        <h2>Учебные входы</h2>
+        <p>Пароли для проверки ролей на защите. Гость — это просто посетитель без входа.</p>
+        <ul class="plain">
+            <li>Администратор — <code>admin</code> / <code>AdminPortal!26</code></li>
+            <li>Менеджер — <code>manager</code> / <code>ManagerPortal!26</code></li>
+            <li>Клиент — <code>client</code> / <code>ClientPortal!26</code></li>
+        </ul>
+    </aside>
+</section>
+{% endblock %}

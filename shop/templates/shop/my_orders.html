@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Мои заказы{% endblock %}
+
+{% block content %}
+<section class="page">
+    <h1>Мои заказы</h1>
+    <p class="intro">Здесь история ваших заказов. Пока заказ новый или в работе, адрес и телефон можно поправить, а сам заказ — удалить.</p>
+    {% for order in orders %}
+    <article class="order">
+        <header>
+            <h2>Заказ №{{ order.pk }}</h2>
+            <span class="status status--{{ order.status }}">{{ order.get_status_display }}</span>
+        </header>
+        <p class="muted">{{ order.created_at|date:"j E Y, H:i" }} · {{ order.total_label }} ₽</p>
+        <p>{{ order.address }}<br>{{ order.phone }}</p>
+        {% if order.comment %}<p>{{ order.comment }}</p>{% endif %}
+        <ul class="plain">
+            {% for item in order.items.all %}
+            <li>{{ item.product_name }} × {{ item.quantity }} — {{ item.line_label }} ₽</li>
+            {% endfor %}
+        </ul>
+        {% if order.client_can_change %}
+        <div class="row-actions">
+            <a class="btn btn--small" href="{% url 'order_edit' order.pk %}">Изменить</a>
+            <a class="btn btn--small btn--ghost" href="{% url 'order_delete' order.pk %}">Удалить</a>
+        </div>
+        {% endif %}
+    </article>
+    {% empty %}
+    <p>Заказов ещё нет. <a href="{% url 'catalog' %}">Перейти в каталог</a>.</p>
+    {% endfor %}
+</section>
+{% endblock %}

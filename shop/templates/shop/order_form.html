@@ -1,0 +1,17 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Заказ №{{ order.pk }}{% endblock %}
+
+{% block content %}
+<section class="page narrow-page">
+    <h1>Заказ №{{ order.pk }}</h1>
+    <p class="intro">Можно изменить адрес, телефон и комментарий. Состав заказа остаётся прежним.</p>
+    <form method="post" class="form" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Сохранить</button>
+        <a class="btn btn--ghost" href="{% url 'my_orders' %}">Назад</a>
+    </form>
+</section>
+{% endblock %}

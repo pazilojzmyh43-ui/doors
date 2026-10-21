@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Категории{% endblock %}
+
+{% block content %}
+<section class="page">
+    {% include "shop/panel/subnav.html" %}
+    <div class="section__head">
+        <h1>Категории</h1>
+        <a class="btn" href="{% url 'category_add' %}">Добавить</a>
+    </div>
+    <p class="intro">Повторное название, даже с другим регистром букв, не сохранится.</p>
+    <div class="table">
+        {% for category in categories %}
+        <article>
+            <div>
+                <h2>{{ category.name }}</h2>
+                <p class="muted">{{ category.products.count }} дверей · /catalog/{{ category.slug }}/</p>
+                <p>{{ category.description }}</p>
+            </div>
+            <div class="row-actions">
+                <a class="btn btn--small btn--ghost" href="{% url 'category_edit' category.pk %}">Изменить</a>
+                <a class="btn btn--small btn--ghost" href="{% url 'category_delete' category.pk %}">Удалить</a>
+            </div>
+        </article>
+        {% empty %}
+        <p>Категорий нет.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

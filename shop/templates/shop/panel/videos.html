@@ -1,0 +1,29 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Видео в панели{% endblock %}
+
+{% block content %}
+<section class="page">
+    {% include "shop/panel/subnav.html" %}
+    <div class="section__head">
+        <h1>Видео работ</h1>
+        <a class="btn" href="{% url 'video_add' %}">Добавить</a>
+    </div>
+    <div class="table">
+        {% for item in videos %}
+        <article>
+            <div>
+                <h2>{{ item.title }}</h2>
+                <p class="muted">{{ item.place }} {% if item.shot_at %}· {{ item.shot_at|date:"j E Y" }}{% endif %}</p>
+            </div>
+            <div class="row-actions">
+                <a class="btn btn--small btn--ghost" href="{% url 'video_edit' item.pk %}">Изменить</a>
+                <a class="btn btn--small btn--ghost" href="{% url 'video_delete' item.pk %}">Удалить</a>
+            </div>
+        </article>
+        {% empty %}
+        <p>Видео нет.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

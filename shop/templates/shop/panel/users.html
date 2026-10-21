@@ -1,0 +1,35 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Пользователи{% endblock %}
+
+{% block content %}
+<section class="page split">
+    <div>
+        {% include "shop/panel/subnav.html" %}
+        <h1>Пользователи</h1>
+        <div class="table">
+            {% for person in users %}
+            <article>
+                <div>
+                    <h2>{{ person.get_full_name|default:person.username }}</h2>
+                    <p class="muted">{{ person.username }} · {{ person.email }} · {{ person.profile.get_role_display }}</p>
+                </div>
+                {% if person.profile.role != 'admin' %}
+                <a class="btn btn--small btn--ghost" href="{% url 'user_delete' person.pk %}">Удалить</a>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+    <aside class="aside">
+        <h2>Новый менеджер</h2>
+        <p>Регистрация с ролью «Менеджер». Клиенты создают себя сами на странице регистрации.</p>
+        <form method="post" class="form" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Зарегистрировать</button>
+        </form>
+    </aside>
+</section>
+{% endblock %}

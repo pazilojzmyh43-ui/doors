@@ -1,0 +1,29 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Новости в панели{% endblock %}
+
+{% block content %}
+<section class="page">
+    {% include "shop/panel/subnav.html" %}
+    <div class="section__head">
+        <h1>Новости</h1>
+        <a class="btn" href="{% url 'news_add' %}">Добавить</a>
+    </div>
+    <div class="table">
+        {% for item in news_list %}
+        <article>
+            <div>
+                <p class="muted">{{ item.published_at|date:"j E Y, H:i" }}</p>
+                <h2>{{ item.title }}</h2>
+            </div>
+            <div class="row-actions">
+                <a class="btn btn--small btn--ghost" href="{% url 'news_edit' item.pk %}">Изменить</a>
+                <a class="btn btn--small btn--ghost" href="{% url 'news_delete' item.pk %}">Удалить</a>
+            </div>
+        </article>
+        {% empty %}
+        <p>Новостей нет.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

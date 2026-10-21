@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Каталог в панели{% endblock %}
+
+{% block content %}
+<section class="page">
+    {% include "shop/panel/subnav.html" %}
+    <div class="section__head">
+        <h1>Каталог дверей</h1>
+        <a class="btn" href="{% url 'product_add' %}">Добавить дверь</a>
+    </div>
+    <div class="table">
+        {% for product in products %}
+        <article>
+            <div class="line__photo">
+                {% if product.image %}<img src="{{ product.image.url }}" alt="">{% endif %}
+            </div>
+            <div>
+                <p class="eyebrow">{{ product.category.name }}</p>
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.price_label }} ₽ · {% if product.in_stock %}в наличии{% else %}под заказ{% endif %}</p>
+            </div>
+            <div class="row-actions">
+                <a class="btn btn--small btn--ghost" href="{% url 'product_detail' product.pk %}">На сайте</a>
+                <a class="btn btn--small btn--ghost" href="{% url 'product_edit' product.pk %}">Изменить</a>
+                <a class="btn btn--small btn--ghost" href="{% url 'product_delete' product.pk %}">Удалить</a>
+            </div>
+        </article>
+        {% empty %}
+        <p>Каталог пуст.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
